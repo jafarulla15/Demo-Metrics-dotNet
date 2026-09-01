@@ -91,6 +91,7 @@ Grafana
 ```
 
 **What is Loki?**
+
 Loki is a log aggregation system.
 
 ```
@@ -105,6 +106,7 @@ Grafana
 ```
 
 **What is Tempo?**
+
 Tempo is used for distributed tracing.
 
 ```
@@ -117,8 +119,9 @@ Tempo
    ▼
 Grafana
 ```
-,
+
 **Then What is Alerting?**
+
 Observability isn't only about looking at dashboards.
 
 ```
@@ -140,5 +143,36 @@ Alertmanager
   └── PagerDuty
 ```
 
+**The Complete Mental Model**
+
+Remember this flow:
+
+```
+                    APPLICATION
+                         │
+                         ▼
+                 INSTRUMENTATION
+                         │
+                  OpenTelemetry
+                         │
+          ┌──────────────┼──────────────┐
+          │              │              │
+          ▼              ▼              ▼
+        LOGS          METRICS         TRACES
+          │              │              │
+          ▼              ▼              ▼
+        Loki         Prometheus       Tempo
+          │              │              │
+          └──────────────┼──────────────┘
+                         ▼
+                      Grafana
+                         │
+              ┌──────────┴──────────┐
+              ▼                     ▼
+          Dashboard              Alerts
+                                    │
+                          Slack / Email / etc.
+```
+=====================================================================
 
 
