@@ -2,6 +2,25 @@
 
 # observability
 
+The Most Important Concept
+You should remember this:
+
+**Pillar	      Main Question**
+Logs	         What happened?
+Metrics	      How much/how often?
+Traces	      Where did it happen?
+
+**Together:**
+```
+              OBSERVABILITY
+                   │
+       ┌───────────┼───────────┐
+       │           │           │
+      Logs       Metrics     Traces
+       │           │           │
+    What?       How much?    Where?
+  ```  
+
 **Metrics — How much / how often?**
 
 Metrics are numerical measurements.
