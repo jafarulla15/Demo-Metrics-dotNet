@@ -243,7 +243,113 @@ OpenTelemetry Metrics
       └── Business metrics
 ```
 
+**Final architecture:**
+```
+                         Browser/Postman
+                              │
+                              ▼
+                    ┌──────────────────┐
+                    │    .NET 8 API    │
+                    └────────┬─────────┘
+                             │
+                     OpenTelemetry
+                         Metrics
+                             │
+        ┌────────────────────┼────────────────────┐
+        │                    │                    │
+        ▼                    ▼                    ▼
+   ASP.NET Core          .NET Runtime          Process
+        │                    │                    │
+        └────────────────────┼────────────────────┘
+                             │
+                             ▼
+                    Prometheus Exporter
+                             │
+                             ▼
+                        /metrics
+                             │
+                             ▼
+                       Prometheus
+                             │
+                             ▼
+                         Grafana
+      ```
 
-      
+**We are actually monitoring:**
+      ```
+                    .NET API
+                       │
+     ┌─────────────────┼─────────────────┐
+     │                 │                 │
+     ▼                 ▼                 ▼
+ HTTP              Runtime            Process
+     │                 │                 │
+     ├─ Requests       ├─ GC             ├─ CPU
+     ├─ Errors         ├─ Heap           ├─ Memory
+     ├─ Duration       ├─ Threads        └─ Process
+     ├─ Status         ├─ Exceptions
+     └─ Routes         ├─ JIT
+                       └─ Locks
+
+                       │
+                       ▼
+                  HTTP Client
+                       │
+                  ┌────┴────┐
+                  │         │
+              External     APIs
+               calls
+
+                       │
+                       ▼
+                    Database
+                       │
+                       ├─ SQL operations
+                       └─ DB metrics
+
+                       │
+                       ▼
+                  Application
+                     Metrics
+                       │
+                       ├─ Orders
+                       ├─ Payments
+                       ├─ Users
+                       ├─ Jobs
+                       └─ Business events
+      ```
+
+Additional libraries exist for other technologies such as PostgreSQL, messaging systems and other frameworks.
+So the real-world approach is:
+```
+Install instrumentation for the technologies your application actually uses.
+```
+
+**Micro Service - Monitoring:**
+
+```
+                 MICROservices
+                      │
+       ┌──────────────┼──────────────┐
+       ▼              ▼              ▼
+   Order API      Payment API    Inventory API
+       │              │              │
+       └──────────────┼──────────────┘
+                      │
+                OpenTelemetry
+                      │
+        ┌─────────────┼─────────────┐
+        ▼             ▼             ▼
+   Prometheus       Loki          Tempo
+        │             │             │
+        └─────────────┼─────────────┘
+                      ▼
+                   Grafana
+                      │
+                 Alertmanager
+                      │
+                Slack / Email
+```
+
 
 
