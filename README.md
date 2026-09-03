@@ -350,6 +350,32 @@ Install instrumentation for the technologies your application actually uses.
                       │
                 Slack / Email
 ```
+**What metrics we will get:**
+```
+.AddAspNetCoreInstrumentation()  --  you get automatic HTTP metrics such as request duration and HTTP information.
+.AddRuntimeInstrumentation()     -- you can monitor .NET runtime behavior.
+.AddMeter(ProductMetrics.MeterName) -- you get your own business metrics:
+
+product_requests_total
+products_created_total
+product_processing_time
+
+LEVEL 2
+
+.NET API
+   │
+   ├── ASP.NET Core metrics
+   ├── Runtime metrics
+   ├── Custom metrics
+   └── HttpClient metrics
+          │
+          ▼
+      Prometheus
+          │
+          ▼
+       Grafana
+```
+
 
 
 
